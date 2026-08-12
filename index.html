@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/icon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Vaani — voice dictation that keeps up with your brain. Speak at 150 words a minute in English, Hindi, or Hinglish, and let AI do the typing. By Rian Infotech."
+    />
+    <title>Vaani — Speak. Don't type.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <canvas id="bg-canvas"></canvas>
+
+    <header class="nav">
+      <a class="nav__brand" href="#top">
+        <img src="/icon.png" alt="" width="28" height="28" />
+        <span>Vaani</span>
+      </a>
+      <nav class="nav__links">
+        <a href="#science">The Science</a>
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+      </nav>
+      <a class="nav__cta" href="#download">Download</a>
+    </header>
+
+    <main id="top">
+      <!-- HERO -->
+      <section class="hero">
+        <p class="eyebrow" data-reveal>Voice-first productivity</p>
+        <h1 class="hero__headline" data-reveal>
+          Your brain composes<br />
+          <span class="grad-text">faster than your fingers type.</span>
+        </h1>
+        <p class="hero__sub" data-reveal>
+          Vaani turns speech into clean, formatted text in real time — English, Hindi, or
+          Hinglish, exactly as you speak it. One hotkey, anywhere on your Mac or PC.
+        </p>
+        <div class="hero__cta" data-reveal>
+          <a id="dl-primary" class="btn btn--primary" href="#" download>
+            <span class="btn__os-icon" id="dl-primary-icon"></span>
+            <span id="dl-primary-label">Download for Mac</span>
+          </a>
+          <a id="dl-secondary" class="btn btn--ghost" href="#" download>
+            <span id="dl-secondary-label">Download for Windows</span>
+          </a>
+        </div>
+        <p class="hero__note" data-reveal>Free to start · Bring your own AI key · No card required</p>
+
+        <div class="hero__stage" aria-hidden="true">
+          <canvas id="wave-canvas"></canvas>
+        </div>
+      </section>
+
+      <!-- SCIENCE -->
+      <section class="science" id="science">
+        <p class="eyebrow" data-reveal>The science</p>
+        <h2 class="section-title" data-reveal>Speech isn't slower thinking. It's thinking, unfiltered.</h2>
+        <p class="section-sub" data-reveal>
+          Typing forces your brain through an extra translation step — form the thought, then
+          fire off one discrete keystroke at a time. Speech skips that step entirely: your
+          language centers produce words as a continuous stream, the way they evolved to.
+        </p>
+
+        <div class="stat-compare" data-reveal>
+          <div class="stat-bar-row">
+            <div class="stat-bar-label">
+              <span>Speaking</span>
+              <strong><span class="counter" data-target="150">0</span> wpm</strong>
+            </div>
+            <div class="stat-bar-track">
+              <div class="stat-bar-fill stat-bar-fill--speak" data-width="100"></div>
+            </div>
+          </div>
+          <div class="stat-bar-row">
+            <div class="stat-bar-label">
+              <span>Typing (average)</span>
+              <strong><span class="counter" data-target="40">0</span> wpm</strong>
+            </div>
+            <div class="stat-bar-track">
+              <div class="stat-bar-fill stat-bar-fill--type" data-width="27"></div>
+            </div>
+          </div>
+        </div>
+
+        <p class="science__callout" data-reveal>
+          Factor in backspacing, typo correction, and the mental effort of translating thought
+          into keystrokes — and the real-world gap widens to nearly
+          <span class="grad-text">5×</span>.
+        </p>
+        <p class="science__source">
+          Based on published speech-rate and typing-speed research (NCVS conversational-rate
+          data; average vs. professional typing benchmarks).
+        </p>
+      </section>
+
+      <!-- FEATURES -->
+      <section class="features" id="features">
+        <p class="eyebrow" data-reveal>Built for how you actually talk</p>
+        <h2 class="section-title" data-reveal>One hotkey. Every app. Any language you think in.</h2>
+
+        <div class="feature-grid">
+          <article class="feature-card" data-reveal>
+            <div class="feature-card__icon">आ</div>
+            <h3>Native Hindi &amp; Hinglish</h3>
+            <p>
+              Speak in Roman Hinglish and get clean Roman output — no forced translation, no
+              script-switching. Vaani understands how you actually talk.
+            </p>
+          </article>
+          <article class="feature-card" data-reveal>
+            <div class="feature-card__icon">◎</div>
+            <h3>Meeting transcription</h3>
+            <p>Records and transcribes calls in the background, with speaker identification, so you stay present instead of note-taking.</p>
+          </article>
+          <article class="feature-card" data-reveal>
+            <div class="feature-card__icon">⚡</div>
+            <h3>One hotkey, everywhere</h3>
+            <p>Works inside any app — email, docs, chat, code editors. Press, speak, and it lands wherever your cursor is.</p>
+          </article>
+          <article class="feature-card" data-reveal>
+            <div class="feature-card__icon">✎</div>
+            <h3>AI cleanup, not just transcription</h3>
+            <p>Filler words gone, grammar fixed, punctuation added — automatically, before it ever hits the page.</p>
+          </article>
+          <article class="feature-card" data-reveal>
+            <div class="feature-card__icon">⌾</div>
+            <h3>Private by design</h3>
+            <p>Run fully offline with a local model, or bring your own cloud API key — your audio is never our business.</p>
+          </article>
+          <article class="feature-card" data-reveal>
+            <div class="feature-card__icon">⊞</div>
+            <h3>Mac &amp; Windows</h3>
+            <p>One app, built natively for both — same speed, same accuracy, same hotkey.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- PRICING -->
+      <section class="pricing" id="pricing">
+        <p class="eyebrow" data-reveal>Simple pricing</p>
+        <h2 class="section-title" data-reveal>Start free. Upgrade when you outgrow it.</h2>
+
+        <div class="pricing-grid">
+          <article class="price-card" data-reveal>
+            <h3>Free</h3>
+            <p class="price-card__price">₹0</p>
+            <p class="price-card__sub">Bring your own AI key</p>
+            <ul>
+              <li>Unlimited dictation</li>
+              <li>Hindi &amp; Hinglish support</li>
+              <li>Meeting transcription</li>
+              <li>Works with your own Groq/OpenAI key</li>
+            </ul>
+            <a class="btn btn--ghost btn--block" href="#download">Get started</a>
+          </article>
+          <article class="price-card price-card--featured" data-reveal>
+            <div class="price-card__badge">Recommended</div>
+            <h3>Pro</h3>
+            <p class="price-card__price">Managed AI included</p>
+            <p class="price-card__sub">No API key setup required</p>
+            <ul>
+              <li>Everything in Free</li>
+              <li>Managed transcription &amp; cleanup</li>
+              <li>No third-party account needed</li>
+              <li>Priority support</li>
+            </ul>
+            <a class="btn btn--primary btn--block" href="#download">Download &amp; upgrade in-app</a>
+          </article>
+        </div>
+      </section>
+
+      <!-- FINAL CTA -->
+      <section class="final-cta" id="download">
+        <h2 class="section-title" data-reveal>Stop typing. Start talking.</h2>
+        <p class="section-sub" data-reveal>Free to download. Set up in under a minute.</p>
+        <div class="hero__cta" data-reveal>
+          <a class="btn btn--primary" href="https://github.com/roboxoXd3/vaani-releases/releases/latest/download/Vaani.dmg" download>Download for Mac</a>
+          <a class="btn btn--ghost" href="https://github.com/roboxoXd3/vaani-releases/releases/latest/download/Vaani-Setup.exe" download>Download for Windows</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer__brand">
+        <img src="/icon.png" alt="" width="20" height="20" />
+        <span>Vaani</span>
+        <span class="footer__by">by Rian Infotech</span>
+      </div>
+      <p class="footer__copy">© <span id="year"></span> Rian Infotech. All rights reserved.</p>
+    </footer>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
