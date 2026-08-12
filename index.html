@@ -45,15 +45,14 @@
           Hinglish, exactly as you speak it. One hotkey, anywhere on your Mac or PC.
         </p>
         <div class="hero__cta" data-reveal>
-          <a id="dl-primary" class="btn btn--primary" href="#" download>
-            <span class="btn__os-icon" id="dl-primary-icon"></span>
+          <button id="dl-primary" class="btn btn--primary" type="button" data-platform="mac">
             <span id="dl-primary-label">Download for Mac</span>
-          </a>
-          <a id="dl-secondary" class="btn btn--ghost" href="#" download>
+          </button>
+          <button id="dl-secondary" class="btn btn--ghost" type="button" data-platform="windows">
             <span id="dl-secondary-label">Download for Windows</span>
-          </a>
+          </button>
         </div>
-        <p class="hero__note" data-reveal>Free to start · Bring your own AI key · No card required</p>
+        <p class="hero__note" data-reveal>Free to start · No card required</p>
 
         <div class="hero__stage" aria-hidden="true">
           <canvas id="wave-canvas"></canvas>
@@ -134,7 +133,7 @@
           <article class="feature-card" data-reveal>
             <div class="feature-card__icon">⌾</div>
             <h3>Private by design</h3>
-            <p>Run fully offline with a local model, or bring your own cloud API key — your audio is never our business.</p>
+            <p>Run fully offline with a local model whenever you want full privacy — your audio is never our business.</p>
           </article>
           <article class="feature-card" data-reveal>
             <div class="feature-card__icon">⊞</div>
@@ -153,24 +152,24 @@
           <article class="price-card" data-reveal>
             <h3>Free</h3>
             <p class="price-card__price">₹0</p>
-            <p class="price-card__sub">Bring your own AI key</p>
+            <p class="price-card__sub">Managed AI included</p>
             <ul>
-              <li>Unlimited dictation</li>
+              <li>Generous free usage</li>
               <li>Hindi &amp; Hinglish support</li>
               <li>Meeting transcription</li>
-              <li>Works with your own Groq/OpenAI key</li>
+              <li>No setup, no API keys</li>
             </ul>
             <a class="btn btn--ghost btn--block" href="#download">Get started</a>
           </article>
           <article class="price-card price-card--featured" data-reveal>
             <div class="price-card__badge">Recommended</div>
             <h3>Pro</h3>
-            <p class="price-card__price">Managed AI included</p>
-            <p class="price-card__sub">No API key setup required</p>
+            <p class="price-card__price">Higher usage limits</p>
+            <p class="price-card__sub">For everyday, all-day use</p>
             <ul>
               <li>Everything in Free</li>
-              <li>Managed transcription &amp; cleanup</li>
-              <li>No third-party account needed</li>
+              <li>Higher monthly usage</li>
+              <li>Priority processing</li>
               <li>Priority support</li>
             </ul>
             <a class="btn btn--primary btn--block" href="#download">Download &amp; upgrade in-app</a>
@@ -183,11 +182,34 @@
         <h2 class="section-title" data-reveal>Stop typing. Start talking.</h2>
         <p class="section-sub" data-reveal>Free to download. Set up in under a minute.</p>
         <div class="hero__cta" data-reveal>
-          <a class="btn btn--primary" href="https://github.com/roboxoXd3/vaani-releases/releases/latest/download/Vaani.dmg" download>Download for Mac</a>
-          <a class="btn btn--ghost" href="https://github.com/roboxoXd3/vaani-releases/releases/latest/download/Vaani-Setup.exe" download>Download for Windows</a>
+          <button class="btn btn--primary" type="button" data-platform="mac">Download for Mac</button>
+          <button class="btn btn--ghost" type="button" data-platform="windows">Download for Windows</button>
         </div>
       </section>
     </main>
+
+    <!-- DOWNLOAD MODAL -->
+    <div class="modal-overlay" id="modal-overlay" hidden>
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <button class="modal__close" id="modal-close" type="button" aria-label="Close">×</button>
+        <p class="eyebrow" id="modal-platform-label">Download for Mac</p>
+        <h3 id="modal-title">Where should we send updates?</h3>
+        <p class="modal__sub">Just your email — we'll start your download right after.</p>
+        <form id="modal-form">
+          <input
+            type="email"
+            id="modal-email"
+            placeholder="you@company.com"
+            required
+            autocomplete="email"
+          />
+          <button class="btn btn--primary btn--block" type="submit" id="modal-submit">
+            Continue to download
+          </button>
+        </form>
+        <p class="modal__error" id="modal-error" hidden></p>
+      </div>
+    </div>
 
     <footer class="footer">
       <div class="footer__brand">

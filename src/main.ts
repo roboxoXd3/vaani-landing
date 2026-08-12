@@ -4,9 +4,12 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const BACKEND_URL = "https://vaani-backend-production-8d5f.up.railway.app";
 const RELEASES_BASE = "https://github.com/roboxoXd3/vaani-releases/releases/latest/download";
-const MAC_URL = `${RELEASES_BASE}/Vaani.dmg`;
-const WIN_URL = `${RELEASES_BASE}/Vaani-Setup.exe`;
+const DOWNLOAD_URLS: Record<"mac" | "windows", string> = {
+  mac: `${RELEASES_BASE}/Vaani.dmg`,
+  windows: `${RELEASES_BASE}/Vaani-Setup.exe`,
+};
 
 // ---------- OS-aware download buttons ----------
 
@@ -19,17 +22,83 @@ function detectOS(): "mac" | "windows" | "other" {
 
 function setupDownloadButtons() {
   const os = detectOS();
-  const primary = document.getElementById("dl-primary") as HTMLAnchorElement | null;
+  const primary = document.getElementById("dl-primary") as HTMLButtonElement | null;
   const primaryLabel = document.getElementById("dl-primary-label");
-  const secondary = document.getElementById("dl-secondary") as HTMLAnchorElement | null;
+  const secondary = document.getElementById("dl-secondary") as HTMLButtonElement | null;
   const secondaryLabel = document.getElementById("dl-secondary-label");
   if (!primary || !primaryLabel || !secondary || !secondaryLabel) return;
 
   const isWindows = os === "windows";
-  primary.href = isWindows ? WIN_URL : MAC_URL;
+  primary.dataset.platform = isWindows ? "windows" : "mac";
   primaryLabel.textContent = isWindows ? "Download for Windows" : "Download for Mac";
-  secondary.href = isWindows ? MAC_URL : WIN_URL;
+  secondary.dataset.platform = isWindows ? "mac" : "windows";
   secondaryLabel.textContent = isWindows ? "Download for Mac" : "Download for Windows";
+}
+
+// ---------- Download modal (captures email before releasing the link) ----------
+
+function setupDownloadModal() {
+  const overlay = document.getElementById("modal-overlay");
+  const closeBtn = document.getElementById("modal-close");
+  const form = document.getElementById("modal-form") as HTMLFormElement | null;
+  const emailInput = document.getElementById("modal-email") as HTMLInputElement | null;
+  const submitBtn = document.getElementById("modal-submit") as HTMLButtonElement | null;
+  const platformLabel = document.getElementById("modal-platform-label");
+  const errorEl = document.getElementById("modal-error");
+  if (!overlay || !closeBtn || !form || !emailInput || !submitBtn || !platformLabel || !errorEl) return;
+
+  let selectedPlatform: "mac" | "windows" = "mac";
+
+  function openModal(platform: "mac" | "windows") {
+    selectedPlatform = platform;
+    platformLabel!.textContent = platform === "mac" ? "Download for Mac" : "Download for Windows";
+    errorEl!.hidden = true;
+    overlay!.hidden = false;
+    emailInput!.focus();
+  }
+
+  function closeModal() {
+    overlay!.hidden = true;
+  }
+
+  document.querySelectorAll<HTMLElement>("[data-platform]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const platform = btn.dataset.platform === "windows" ? "windows" : "mac";
+      openModal(platform);
+    });
+  });
+
+  closeBtn.addEventListener("click", closeModal);
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) closeModal();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !overlay!.hidden) closeModal();
+  });
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    errorEl!.hidden = true;
+    submitBtn!.disabled = true;
+    submitBtn!.textContent = "Starting download…";
+    try {
+      const res = await fetch(`${BACKEND_URL}/downloads/track`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: emailInput!.value.trim(), platform: selectedPlatform }),
+      });
+      if (!res.ok) throw new Error("Something went wrong. Please try again.");
+      window.location.href = DOWNLOAD_URLS[selectedPlatform];
+      closeModal();
+      form.reset();
+    } catch (err) {
+      errorEl!.textContent = err instanceof Error ? err.message : "Something went wrong.";
+      errorEl!.hidden = false;
+    } finally {
+      submitBtn!.disabled = false;
+      submitBtn!.textContent = "Continue to download";
+    }
+  });
 }
 
 // ---------- Scroll reveals ----------
@@ -197,6 +266,7 @@ function setupFooterYear() {
 }
 
 setupDownloadButtons();
+setupDownloadModal();
 setupReveals();
 setupStatCounters();
 setupBackgroundCanvas();
