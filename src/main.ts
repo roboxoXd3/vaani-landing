@@ -201,63 +201,56 @@ function setupBackgroundCanvas() {
   tick();
 }
 
-// ---------- Hero waveform canvas ----------
+// ---------- Typewriter demos (hero app-window + chat mockup) ----------
 
-function setupWaveCanvas() {
-  const canvas = document.getElementById("wave-canvas") as HTMLCanvasElement | null;
-  if (!canvas) return;
-  const ctx = canvas.getContext("2d");
-  if (!ctx) return;
+function typeLoop(el: HTMLElement, text: string, opts: { speed?: number; pause?: number } = {}) {
+  const speed = opts.speed ?? 42;
+  const pause = opts.pause ?? 2000;
+  let i = 0;
+  let deleting = false;
 
-  const BAR_COUNT = 64;
-  let phases = Array.from({ length: BAR_COUNT }, () => Math.random() * Math.PI * 2);
+  function step() {
+    if (!deleting) {
+      i++;
+      el.textContent = text.slice(0, i);
+      if (i >= text.length) {
+        deleting = true;
+        setTimeout(step, pause);
+        return;
+      }
+    } else {
+      i--;
+      el.textContent = text.slice(0, i);
+      if (i <= 0) {
+        deleting = false;
+        setTimeout(step, 600);
+        return;
+      }
+    }
+    setTimeout(step, deleting ? speed / 2.5 : speed);
+  }
+  step();
+}
 
-  function resize() {
-    const rect = canvas!.parentElement!.getBoundingClientRect();
-    canvas!.width = rect.width * devicePixelRatio;
-    canvas!.height = rect.height * devicePixelRatio;
-    canvas!.style.width = rect.width + "px";
-    canvas!.style.height = rect.height + "px";
+function setupTypewriters() {
+  const heroEl = document.getElementById("hero-typewriter");
+  if (heroEl) {
+    typeLoop(heroEl, "Q3 revenue is up 18%, and the team is finally ahead of schedule.");
   }
 
-  let gradient: CanvasGradient | null = null;
-
-  function tick(t: number) {
-    if (!ctx || !canvas) return;
-    const w = canvas.width;
-    const h = canvas.height;
-    ctx.clearRect(0, 0, w, h);
-
-    if (!gradient) {
-      gradient = ctx.createLinearGradient(0, 0, w, 0);
-      gradient.addColorStop(0, "#f2a65a");
-      gradient.addColorStop(0.45, "#e0399b");
-      gradient.addColorStop(0.75, "#2a2f8c");
-      gradient.addColorStop(1, "#38b6ff");
-    }
-
-    const barWidth = w / BAR_COUNT;
-    ctx.fillStyle = gradient;
-    for (let i = 0; i < BAR_COUNT; i++) {
-      const centerBoost = 1 - Math.abs(i - BAR_COUNT / 2) / (BAR_COUNT / 2);
-      const amp = 0.15 + centerBoost * 0.75;
-      const y = Math.sin(t * 0.0018 + phases[i]) * 0.5 + 0.5;
-      const barH = h * amp * (0.25 + y * 0.75);
-      const x = i * barWidth;
-      const radius = Math.min(barWidth * 0.35, 6);
-      ctx.beginPath();
-      const bw = barWidth * 0.6;
-      const bx = x + (barWidth - bw) / 2;
-      const by = (h - barH) / 2;
-      ctx.roundRect(bx, by, bw, barH, radius);
-      ctx.fill();
-    }
-    requestAnimationFrame(tick);
+  const chatEl = document.getElementById("chat-typewriter");
+  const chatMockup = document.querySelector(".chat-mockup");
+  if (chatEl && chatMockup) {
+    ScrollTrigger.create({
+      trigger: chatMockup,
+      start: "top 80%",
+      once: true,
+      onEnter: () =>
+        typeLoop(chatEl as HTMLElement, "Pushed the fix, tests are green — ready for review whenever you are.", {
+          pause: 2600,
+        }),
+    });
   }
-
-  window.addEventListener("resize", resize);
-  resize();
-  requestAnimationFrame(tick);
 }
 
 function setupFooterYear() {
@@ -270,5 +263,5 @@ setupDownloadModal();
 setupReveals();
 setupStatCounters();
 setupBackgroundCanvas();
-setupWaveCanvas();
+setupTypewriters();
 setupFooterYear();
