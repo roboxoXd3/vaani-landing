@@ -123,6 +123,33 @@ function setupReveals() {
 
 // ---------- Stat counters + bars ----------
 
+function runRace() {
+  document.querySelectorAll<HTMLElement>(".stat-bar-fill").forEach((el) => {
+    el.style.width = "0%";
+  });
+  document.querySelectorAll<HTMLElement>(".counter").forEach((el) => {
+    el.textContent = "0";
+  });
+
+  requestAnimationFrame(() => {
+    document.querySelectorAll<HTMLElement>(".counter").forEach((el) => {
+      const target = Number(el.dataset.target || "0");
+      const obj = { val: 0 };
+      gsap.to(obj, {
+        val: target,
+        duration: 1.4,
+        ease: "power2.out",
+        onUpdate: () => {
+          el.textContent = String(Math.round(obj.val));
+        },
+      });
+    });
+    document.querySelectorAll<HTMLElement>(".stat-bar-fill").forEach((el) => {
+      el.style.width = (el.dataset.width || "0") + "%";
+    });
+  });
+}
+
 function setupStatCounters() {
   const section = document.querySelector(".stat-compare");
   if (!section) return;
@@ -131,21 +158,51 @@ function setupStatCounters() {
     trigger: section,
     start: "top 80%",
     once: true,
-    onEnter: () => {
-      document.querySelectorAll<HTMLElement>(".counter").forEach((el) => {
-        const target = Number(el.dataset.target || "0");
-        const obj = { val: 0 };
-        gsap.to(obj, {
-          val: target,
-          duration: 1.6,
-          ease: "power2.out",
-          onUpdate: () => {
-            el.textContent = String(Math.round(obj.val));
-          },
-        });
-      });
-      document.querySelectorAll<HTMLElement>(".stat-bar-fill").forEach((el) => {
-        el.style.width = (el.dataset.width || "0") + "%";
+    onEnter: runRace,
+  });
+
+  const raceBtn = document.getElementById("race-btn") as HTMLButtonElement | null;
+  if (raceBtn) {
+    raceBtn.addEventListener("click", () => {
+      raceBtn.disabled = true;
+      runRace();
+      setTimeout(() => {
+        raceBtn.disabled = false;
+      }, 1500);
+    });
+  }
+}
+
+// ---------- How it Works: pinned, scroll-scrubbed step focus ----------
+
+function setupFlowScrub() {
+  const section = document.querySelector(".flow");
+  const steps = document.querySelectorAll<HTMLElement>(".flow-step");
+  if (!section || steps.length !== 3) return;
+
+  // Only pin on desktop — the steps stack vertically below 820px, where a
+  // scroll-scrubbed pin would fight the natural reading flow instead of
+  // helping it.
+  ScrollTrigger.matchMedia({
+    "(min-width: 821px)": () => {
+      ScrollTrigger.create({
+        trigger: section,
+        start: "top top+=80",
+        end: "+=900",
+        pin: true,
+        scrub: 1,
+        onUpdate: (self) => {
+          const idx = Math.min(2, Math.floor(self.progress * 3));
+          steps.forEach((step, i) => {
+            step.classList.toggle("flow-step--active", i === idx);
+            step.classList.toggle("flow-step--inactive", i !== idx);
+          });
+        },
+        onLeaveBack: () => {
+          steps.forEach((step) => {
+            step.classList.remove("flow-step--active", "flow-step--inactive");
+          });
+        },
       });
     },
   });
@@ -233,11 +290,6 @@ function typeLoop(el: HTMLElement, text: string, opts: { speed?: number; pause?:
 }
 
 function setupTypewriters() {
-  const heroEl = document.getElementById("hero-typewriter");
-  if (heroEl) {
-    typeLoop(heroEl, "Client wants to revisit pricing next week — send the updated proposal by Friday.");
-  }
-
   const chatEl = document.getElementById("chat-typewriter");
   const chatMockup = document.querySelector(".chat-mockup");
   if (chatEl && chatMockup) {
@@ -253,6 +305,93 @@ function setupTypewriters() {
         ),
     });
   }
+}
+
+// ---------- Hero: click-to-try live simulation ----------
+
+function setupHeroDemo() {
+  const btn = document.getElementById("hero-demo-btn") as HTMLButtonElement | null;
+  const label = document.getElementById("hero-demo-label");
+  const wave = document.getElementById("hero-demo-wave");
+  const mic = document.getElementById("hero-demo-mic");
+  const textEl = document.getElementById("hero-typewriter");
+  const badge = document.getElementById("hero-cleaned-badge");
+  if (!btn || !label || !wave || !mic || !textEl || !badge) return;
+
+  const RAW =
+    "so um client wants to revisit pricing next week uh need to send updated proposal by friday";
+  const CLEAN =
+    "Client wants to revisit pricing next week — I need to send the updated proposal by Friday.";
+
+  let playing = false;
+
+  function showWave(show: boolean) {
+    (wave as HTMLElement).style.display = show ? "inline-flex" : "none";
+    (mic as HTMLElement).style.display = show ? "none" : "inline-flex";
+  }
+
+  function setIdle(firstRun: boolean) {
+    playing = false;
+    btn!.disabled = false;
+    label!.textContent = firstRun ? "Click to try Vaani" : "Try it again ↻";
+    showWave(false);
+    mic!.classList.remove("dictation-pill__mic-icon--spin");
+  }
+
+  function play() {
+    if (playing) return;
+    playing = true;
+    btn!.disabled = true;
+    badge!.classList.remove("cleaned-badge--show");
+    textEl!.classList.remove("typewriter--raw", "typewriter--flash");
+    textEl!.textContent = "";
+
+    label!.textContent = "Listening…";
+    showWave(true);
+
+    setTimeout(() => {
+      label!.textContent = "Transcribing…";
+      showWave(false);
+      textEl!.classList.add("typewriter--raw");
+
+      let i = 0;
+      const typeRaw = () => {
+        i++;
+        textEl!.textContent = RAW.slice(0, i);
+        if (i < RAW.length) {
+          setTimeout(typeRaw, 18);
+        } else {
+          setTimeout(cleanup, 500);
+        }
+      };
+      typeRaw();
+    }, 1600);
+
+    function cleanup() {
+      label!.textContent = "Cleaning up…";
+      mic!.classList.add("dictation-pill__mic-icon--spin");
+
+      setTimeout(() => {
+        textEl!.classList.remove("typewriter--raw");
+        textEl!.textContent = CLEAN;
+        textEl!.classList.add("typewriter--flash");
+        badge!.classList.add("cleaned-badge--show");
+        mic!.classList.remove("dictation-pill__mic-icon--spin");
+        setTimeout(() => setIdle(false), 400);
+      }, 900);
+    }
+  }
+
+  btn.addEventListener("click", play);
+
+  // Auto-play once when the visitor scrolls it into view, so the demo is
+  // felt immediately without requiring them to find and click first.
+  ScrollTrigger.create({
+    trigger: btn,
+    start: "top 90%",
+    once: true,
+    onEnter: () => setTimeout(play, 600),
+  });
 }
 
 // ---------- One Voice: interactive scenario switcher ----------
@@ -295,6 +434,8 @@ const ADAPT_SCENARIOS: Record<string, AdaptScenario> = {
   },
 };
 
+let adaptFadeTimer: number | undefined;
+
 function renderAdaptScenario(key: string) {
   const scenario = ADAPT_SCENARIOS[key];
   if (!scenario) return;
@@ -303,13 +444,21 @@ function renderAdaptScenario(key: string) {
   const chatEl = document.getElementById("adapt-chat-text");
   const emailEl = document.getElementById("adapt-email-text");
   const notesEl = document.getElementById("adapt-notes-content");
-  if (sourceEl) sourceEl.textContent = scenario.source;
-  if (chatEl) chatEl.textContent = scenario.chat;
-  if (emailEl) emailEl.textContent = scenario.email;
-  if (notesEl) {
-    const items = scenario.notesItems.map((item) => `<li>${item}</li>`).join("");
-    notesEl.innerHTML = `<p>${scenario.notesIntro}</p><ul>${items}</ul>`;
-  }
+  const targets = [sourceEl, chatEl, emailEl, notesEl].filter((el): el is HTMLElement => !!el);
+
+  window.clearTimeout(adaptFadeTimer);
+  targets.forEach((el) => el.classList.add("adapt-fade-out"));
+
+  adaptFadeTimer = window.setTimeout(() => {
+    if (sourceEl) sourceEl.textContent = scenario.source;
+    if (chatEl) chatEl.textContent = scenario.chat;
+    if (emailEl) emailEl.textContent = scenario.email;
+    if (notesEl) {
+      const items = scenario.notesItems.map((item) => `<li>${item}</li>`).join("");
+      notesEl.innerHTML = `<p>${scenario.notesIntro}</p><ul>${items}</ul>`;
+    }
+    targets.forEach((el) => el.classList.remove("adapt-fade-out"));
+  }, 160);
 }
 
 function setupAdaptSwitcher() {
@@ -336,7 +485,9 @@ setupDownloadButtons();
 setupDownloadModal();
 setupReveals();
 setupStatCounters();
+setupFlowScrub();
 setupBackgroundCanvas();
 setupTypewriters();
+setupHeroDemo();
 setupAdaptSwitcher();
 setupFooterYear();

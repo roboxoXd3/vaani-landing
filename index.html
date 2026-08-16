@@ -57,7 +57,7 @@
         </div>
         <p class="hero__note" data-reveal>Free to start · No card required</p>
 
-        <div class="hero__mockup" data-reveal aria-hidden="true">
+        <div class="hero__mockup" data-reveal>
           <div class="app-window">
             <div class="app-window__bar">
               <span class="dot dot--r"></span><span class="dot dot--y"></span
@@ -65,16 +65,18 @@
               <span class="app-window__title">Notes</span>
             </div>
             <div class="app-window__body">
-              <p class="typewriter" id="hero-typewriter"></p>
+              <p class="typewriter" id="hero-typewriter">Click the button below and try it.</p>
               <span class="caret" id="hero-caret"></span>
+              <span class="cleaned-badge" id="hero-cleaned-badge">✨ Cleaned up by Vaani</span>
             </div>
           </div>
-          <div class="dictation-pill" id="hero-pill">
-            <span class="dictation-pill__wave">
+          <button class="dictation-pill dictation-pill--idle" id="hero-demo-btn" type="button">
+            <span class="dictation-pill__wave" id="hero-demo-wave" style="display: none">
               <i></i><i></i><i></i><i></i><i></i>
             </span>
-            <span class="dictation-pill__label">Listening…</span>
-          </div>
+            <svg class="dictation-pill__mic-icon" id="hero-demo-mic" viewBox="0 0 24 24" fill="none" width="14" height="14"><rect x="9" y="3" width="6" height="10" rx="3" stroke="currentColor" stroke-width="1.8"/><path d="M6 11a6 6 0 0012 0M12 17v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            <span class="dictation-pill__label" id="hero-demo-label">Click to try Vaani</span>
+          </button>
         </div>
       </section>
 
@@ -225,6 +227,11 @@
           form the thought, then peck it out one keystroke at a time. Speech skips that step
           entirely: you already think in full sentences, so just say them.
         </p>
+
+        <button class="race-btn" id="race-btn" type="button" data-reveal>
+          <svg viewBox="0 0 24 24" fill="none" width="14" height="14"><path d="M6 4l14 8-14 8V4z" fill="currentColor"/></svg>
+          Watch the race
+        </button>
 
         <div class="stat-compare" data-reveal>
           <div class="stat-bar-row">
