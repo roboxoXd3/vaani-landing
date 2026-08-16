@@ -235,7 +235,7 @@ function typeLoop(el: HTMLElement, text: string, opts: { speed?: number; pause?:
 function setupTypewriters() {
   const heroEl = document.getElementById("hero-typewriter");
   if (heroEl) {
-    typeLoop(heroEl, "Q3 revenue is up 18%, and the team is finally ahead of schedule.");
+    typeLoop(heroEl, "Client wants to revisit pricing next week — send the updated proposal by Friday.");
   }
 
   const chatEl = document.getElementById("chat-typewriter");
@@ -246,11 +246,85 @@ function setupTypewriters() {
       start: "top 80%",
       once: true,
       onEnter: () =>
-        typeLoop(chatEl as HTMLElement, "Pushed the fix, tests are green — ready for review whenever you are.", {
-          pause: 2600,
-        }),
+        typeLoop(
+          chatEl as HTMLElement,
+          "Hi Meera! Sending it over today — we'll cover pricing, timeline, and next steps.",
+          { pause: 2600 }
+        ),
     });
   }
+}
+
+// ---------- One Voice: interactive scenario switcher ----------
+
+interface AdaptScenario {
+  source: string;
+  chat: string;
+  email: string;
+  notesIntro: string;
+  notesItems: string[];
+}
+
+const ADAPT_SCENARIOS: Record<string, AdaptScenario> = {
+  followup: {
+    source:
+      '"yaar client se pricing pe baat hui thi, unhe thoda time chahiye decide karne ke liye, hum unhe agle hafte follow up karenge"',
+    chat: "Just spoke with the client about pricing — they need a bit more time to decide. We'll follow up next week.",
+    email:
+      "Hi, thank you for discussing pricing with us today. Take your time — we'll follow up next week to check in.",
+    notesIntro: "Client discussion — pricing:",
+    notesItems: ["Needs more time to decide", "Follow-up scheduled next week"],
+  },
+  session: {
+    source:
+      '"session achi rahi, client apni confidence pe kaam kar raha hai, agli session mein hum unke goals revisit karenge aur ek action plan banayenge"',
+    chat: "Good session today — client is working on their confidence. Next session we'll revisit goals and build an action plan.",
+    email:
+      "Hi, great session today! We're making good progress on confidence-building. In our next session, we'll revisit your goals and put together an action plan.",
+    notesIntro: "Session summary:",
+    notesItems: ["Focus area: confidence-building", "Next session: revisit goals, build action plan"],
+  },
+  proposal: {
+    source:
+      '"naye client ke liye proposal banana hai, teen phases honge — discovery, implementation, aur review, aur timeline hoga six weeks"',
+    chat: "Working on the new client's proposal — three phases: discovery, implementation, and review. Timeline is six weeks.",
+    email:
+      "Hi, please find our proposed approach below: three phases — discovery, implementation, and review — over a six-week timeline.",
+    notesIntro: "Proposal draft:",
+    notesItems: ["Phase 1: Discovery", "Phase 2: Implementation", "Phase 3: Review", "Timeline: 6 weeks"],
+  },
+};
+
+function renderAdaptScenario(key: string) {
+  const scenario = ADAPT_SCENARIOS[key];
+  if (!scenario) return;
+
+  const sourceEl = document.getElementById("adapt-source-text");
+  const chatEl = document.getElementById("adapt-chat-text");
+  const emailEl = document.getElementById("adapt-email-text");
+  const notesEl = document.getElementById("adapt-notes-content");
+  if (sourceEl) sourceEl.textContent = scenario.source;
+  if (chatEl) chatEl.textContent = scenario.chat;
+  if (emailEl) emailEl.textContent = scenario.email;
+  if (notesEl) {
+    const items = scenario.notesItems.map((item) => `<li>${item}</li>`).join("");
+    notesEl.innerHTML = `<p>${scenario.notesIntro}</p><ul>${items}</ul>`;
+  }
+}
+
+function setupAdaptSwitcher() {
+  const tabs = document.querySelectorAll<HTMLButtonElement>(".adapt-tab");
+  if (!tabs.length) return;
+
+  renderAdaptScenario("followup");
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      tabs.forEach((t) => t.classList.remove("adapt-tab--active"));
+      tab.classList.add("adapt-tab--active");
+      renderAdaptScenario(tab.dataset.scenario || "followup");
+    });
+  });
 }
 
 function setupFooterYear() {
@@ -264,4 +338,5 @@ setupReveals();
 setupStatCounters();
 setupBackgroundCanvas();
 setupTypewriters();
+setupAdaptSwitcher();
 setupFooterYear();

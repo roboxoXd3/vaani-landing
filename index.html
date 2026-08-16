@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Vaani — voice dictation that keeps up with your brain. Speak in English, Hindi, or Hinglish and get clean English text, instantly. By Rian Infotech."
+      content="Vaani — voice dictation built for coaches and consultants. Speak session notes, client follow-ups, and proposals in English, Hindi, or Hinglish and get clean English text, instantly. By Rian Infotech."
     />
     <title>Vaani — Just speak. Vaani writes.</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -38,14 +38,14 @@
     <main id="top">
       <!-- HERO -->
       <section class="hero">
-        <p class="eyebrow" data-reveal>Voice-first productivity</p>
+        <p class="eyebrow" data-reveal>Built for coaches &amp; consultants</p>
         <h1 class="hero__headline hero__headline--big" data-reveal>
           Just speak.<br />
           <span class="grad-text">Vaani writes.</span>
         </h1>
         <p class="hero__sub" data-reveal>
-          Speak in English, Hindi, or Hinglish. Vaani turns it into clean, correct English text
-          — instantly, anywhere on your Mac or PC.
+          Session notes, client follow-ups, proposals — say them, don't type them. Vaani turns
+          your voice into clean, professional English, instantly on your Mac or PC.
         </p>
         <div class="hero__cta" data-reveal>
           <button id="dl-primary" class="btn btn--primary" type="button" data-platform="mac">
@@ -125,34 +125,34 @@
         </h2>
         <p class="section-sub" data-reveal>
           No copy-paste, no switching apps. Press the hotkey, speak, and clean text lands right
-          where you were typing — chat, email, docs, code, anything.
+          where you were typing — client chats, email, proposals, anywhere.
         </p>
 
         <div class="chat-mockup" data-reveal aria-hidden="true">
           <div class="chat-mockup__sidebar">
             <div class="chat-mockup__brand">
               <img src="/icon.png" alt="" width="18" height="18" />
-              <span>Team</span>
+              <span>Clients</span>
             </div>
-            <div class="chat-mockup__item">general</div>
-            <div class="chat-mockup__item chat-mockup__item--active">standup</div>
-            <div class="chat-mockup__item">design</div>
-            <div class="chat-mockup__item">random</div>
+            <div class="chat-mockup__item chat-mockup__item--active">Meera Sharma</div>
+            <div class="chat-mockup__item">Arjun Patel</div>
+            <div class="chat-mockup__item">Priya Singh</div>
+            <div class="chat-mockup__item">+ New client</div>
           </div>
           <div class="chat-mockup__main">
-            <div class="chat-mockup__header">#standup</div>
+            <div class="chat-mockup__header">Meera Sharma</div>
             <div class="chat-mockup__messages">
               <div class="chat-bubble">
-                <div class="chat-bubble__avatar">L</div>
+                <div class="chat-bubble__avatar">M</div>
                 <div>
-                  <div class="chat-bubble__name">Lisa <span>10:02 AM</span></div>
-                  <div class="chat-bubble__text">Morning team, any updates from yesterday?</div>
+                  <div class="chat-bubble__name">Meera <span>4:02 PM</span></div>
+                  <div class="chat-bubble__text">Hi! Just checking in on the proposal 🙂</div>
                 </div>
               </div>
               <div class="chat-bubble chat-bubble--me">
-                <div class="chat-bubble__avatar chat-bubble__avatar--me">R</div>
+                <div class="chat-bubble__avatar chat-bubble__avatar--me">Y</div>
                 <div>
-                  <div class="chat-bubble__name">You <span>10:03 AM</span></div>
+                  <div class="chat-bubble__name">You <span>4:03 PM</span></div>
                   <div class="chat-bubble__text chat-bubble__text--typing" id="chat-typewriter"></div>
                 </div>
               </div>
@@ -163,7 +163,7 @@
                   <i></i><i></i><i></i><i></i>
                 </span>
               </span>
-              <span class="chat-mockup__composer-hint">Message #standup</span>
+              <span class="chat-mockup__composer-hint">Message Meera Sharma</span>
             </div>
           </div>
         </div>
@@ -175,15 +175,20 @@
         <h2 class="section-title" data-reveal>Speak once. Vaani shapes it for where it's going.</h2>
         <p class="section-sub" data-reveal>
           Same dictation, in Hinglish. Vaani always outputs clean English — and matches the
-          format to what you're writing.
+          format to what you're writing. Try a scenario:
         </p>
+
+        <div class="adapt-tabs" data-reveal role="tablist">
+          <button class="adapt-tab adapt-tab--active" type="button" data-scenario="followup">
+            Client Follow-up
+          </button>
+          <button class="adapt-tab" type="button" data-scenario="session">Session Notes</button>
+          <button class="adapt-tab" type="button" data-scenario="proposal">Proposal Email</button>
+        </div>
 
         <div class="adapt-source" data-reveal>
           <span class="adapt-source__label">You said</span>
-          <p class="adapt-source__text">
-            "yaar kal ka meeting reschedule karna hai, client available nahi hai, aur teen cheezein
-            cover karni hain — budget, timeline, aur deliverables"
-          </p>
+          <p class="adapt-source__text" id="adapt-source-text"></p>
         </div>
 
         <div class="adapt-grid" data-reveal>
@@ -192,26 +197,21 @@
               <svg viewBox="0 0 24 24" fill="none"><path d="M4 4h16v12H7l-3 3V4z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
               Chat
             </div>
-            <p>Hey, need to push tomorrow's meeting — client's not free. We'll cover budget, timeline, and deliverables.</p>
+            <p id="adapt-chat-text"></p>
           </article>
           <article class="adapt-card adapt-card--featured">
             <div class="adapt-card__label">
               <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M3 7l9 6 9-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
               Email
             </div>
-            <p>Hi, could we reschedule tomorrow's meeting? The client isn't available. Agenda remains budget, timeline, and deliverables.</p>
+            <p id="adapt-email-text"></p>
           </article>
           <article class="adapt-card">
             <div class="adapt-card__label">
               <svg viewBox="0 0 24 24" fill="none"><path d="M5 4h14v16l-7-3-7 3V4z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
               Notes
             </div>
-            <p>Reschedule tomorrow's meeting (client unavailable). Agenda:</p>
-            <ul>
-              <li>Budget</li>
-              <li>Timeline</li>
-              <li>Deliverables</li>
-            </ul>
+            <div id="adapt-notes-content"></div>
           </article>
         </div>
       </section>
@@ -221,9 +221,9 @@
         <p class="eyebrow" data-reveal>The science</p>
         <h2 class="section-title" data-reveal>Speech isn't slower thinking. It's thinking, unfiltered.</h2>
         <p class="section-sub" data-reveal>
-          Typing forces your brain through an extra translation step — form the thought, then
-          fire off one discrete keystroke at a time. Speech skips that step entirely: your
-          language centers produce words as a continuous stream, the way they evolved to.
+          Every session note and client email you type forces your brain through an extra step —
+          form the thought, then peck it out one keystroke at a time. Speech skips that step
+          entirely: you already think in full sentences, so just say them.
         </p>
 
         <div class="stat-compare" data-reveal>
@@ -253,8 +253,7 @@
           <span class="grad-text">5×</span>.
         </p>
         <p class="science__source">
-          Based on published speech-rate and typing-speed research (NCVS conversational-rate
-          data; average vs. professional typing benchmarks).
+          Based on published research comparing average speaking speed to average typing speed.
         </p>
       </section>
 
@@ -275,15 +274,15 @@
             <div class="feature-card__icon">
               <svg viewBox="0 0 24 24" fill="none"><rect x="5" y="3" width="8" height="12" rx="4" stroke="currentColor" stroke-width="1.6"/><path d="M4 11a5 5 0 0010 0M9 16v3m-3 0h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
             </div>
-            <h3>Meeting transcription</h3>
-            <p>Records and transcribes calls in the background, with speaker identification — clear even through loud transients — so you stay present instead of note-taking.</p>
+            <h3>Client call transcription</h3>
+            <p>Records and transcribes coaching sessions and client calls in the background, with speaker identification — clear even through loud transients — so you stay present instead of note-taking.</p>
           </article>
           <article class="feature-card" data-reveal>
             <div class="feature-card__icon">
               <svg viewBox="0 0 24 24" fill="none"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
             </div>
             <h3>One hotkey, everywhere</h3>
-            <p>Works inside any app — email, docs, chat, code editors. Press, speak, and it lands wherever your cursor is.</p>
+            <p>Works inside any app — email, docs, proposals, client chats. Press, speak, and it lands wherever your cursor is.</p>
           </article>
           <article class="feature-card" data-reveal>
             <div class="feature-card__icon">
@@ -297,7 +296,7 @@
               <svg viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
             </div>
             <h3>Private by design</h3>
-            <p>Run fully offline with a local model whenever you want full privacy — your audio is never our business.</p>
+            <p>Run fully offline with a local model whenever you want full privacy — your client conversations are never our business.</p>
           </article>
           <article class="feature-card" data-reveal>
             <div class="feature-card__icon">
@@ -318,7 +317,7 @@
               <svg viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0l-4-4m4 4l4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
             </div>
             <h3>Export anywhere</h3>
-            <p>PDF, Word, Markdown, or plain text — your notes and meeting transcripts, ready for wherever they need to go next.</p>
+            <p>PDF, Word, Markdown, or plain text — your session notes, proposals, and client transcripts, ready to send wherever they need to go.</p>
           </article>
           <article class="feature-card" data-reveal>
             <div class="feature-card__icon">
