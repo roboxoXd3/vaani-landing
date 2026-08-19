@@ -237,10 +237,19 @@ a {
   justify-content: center;
 }
 
-.hero__note {
-  margin-top: 18px;
+.hero__trust {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   font-size: 13px;
   color: var(--ink-faint);
+}
+
+.hero__trust span[aria-hidden] {
+  color: var(--border-strong);
 }
 
 /* ---------- Hero mockup (app window + dictation pill) ---------- */
@@ -1301,6 +1310,51 @@ button.dictation-pill:disabled {
   height: 12px;
   border-radius: 3px;
   background: var(--gradient-brand);
+}
+
+.pricing__risk {
+  margin-top: 28px;
+  font-size: 14px;
+  color: var(--ink-faint);
+  text-align: center;
+}
+
+/* ---------- FAQ ---------- */
+
+.faq {
+  max-width: var(--max-width);
+  margin: clamp(100px, 14vw, 180px) auto 0;
+  padding: 0 clamp(20px, 5vw, 64px);
+}
+
+.faq-list {
+  margin-top: 40px;
+  max-width: 760px;
+  display: flex;
+  flex-direction: column;
+}
+
+.faq-item {
+  padding: 24px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.faq-item:first-child {
+  border-top: 1px solid var(--border);
+}
+
+.faq-item h3 {
+  font-family: var(--font-display);
+  font-size: 16.5px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.faq-item p {
+  font-size: 14.5px;
+  color: var(--ink-dim);
+  line-height: 1.65;
+  max-width: 640px;
 }
 
 /* ---------- Final CTA ---------- */
